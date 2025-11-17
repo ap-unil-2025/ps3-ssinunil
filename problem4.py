@@ -3,24 +3,26 @@ Problem 4: File Word Counter
 Process text files and perform various analyses.
 """
 
-def create_sample_file(filename="sample.txt"):
-    """
-    Create a sample text file for testing.
-
-    Args:
-        filename (str): Name of the file to create
-    """
+def create_sample_file(filename="sample.txt"): 
     content = """Python is a powerful programming language.
 It is widely used in web development, data science, and automation.
 Python's simple syntax makes it great for beginners.
 Many companies use Python for their projects."""
-
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f: 
         f.write(content)
-    print(f"Created {filename}")
+    print(f"Sample file '{filename}' created.")
+
 
 
 def count_words(filename):
+    try:
+        with open(filename, 'r') as file:
+            text = file.read()
+            words = text.split()
+            return len(words)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found!")
+        return None
     """
     Count total words in the file.
 
@@ -36,6 +38,13 @@ def count_words(filename):
 
 
 def count_lines(filename):
+    try:
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+            return len(lines)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found!")
+        return None
     """
     Count total lines in the file.
 
@@ -50,6 +59,15 @@ def count_lines(filename):
 
 
 def count_characters(filename, include_spaces=True):
+    try:
+        with open(filename, 'r') as file:
+            text = file.read()
+            if not include_spaces:
+                text = text.replace(" ", "")
+            return len(text)
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found!")
+        return None
     """
     Count characters in the file.
 
@@ -66,6 +84,15 @@ def count_characters(filename, include_spaces=True):
 
 
 def find_longest_word(filename):
+    try:
+        with open(filename, 'r') as file:
+            text = file.read()
+            words = text.split()
+            longest_word = max(words, key=len)
+            return longest_word
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found!")
+        return None
     """
     Find and return the longest word in the file.
 
@@ -81,6 +108,20 @@ def find_longest_word(filename):
 
 
 def word_frequency(filename):
+    try:
+        with open(filename, 'r') as file:
+            text = file.read().lower()
+            import string
+            for punct in string.punctuation:
+                text = text.replace(punct, "")
+            words = text.split()
+            frequency = {}
+            for word in words:
+                frequency[word] = frequency.get(word, 0) + 1
+            return frequency
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found!")
+        return None
     """
     Return a dictionary of word frequencies.
     Convert words to lowercase and remove punctuation.
